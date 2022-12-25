@@ -1,0 +1,43 @@
+{%- assign newsletter_form_id = 'newsletter-' | append: section_id -%}
+{% form 'customer', id: newsletter_form_id %}
+  {%- if form.posted_successfully? -%}
+    <div class="note note--success">{{ 'general.newsletter_form.newsletter_confirmation' | t }}</div>
+  {%- endif -%}
+  {%- if form.errors and form.context == snippet_context -%}
+    {{ form.errors | default_errors }}
+  {%- endif -%}
+
+  {%- unless form.posted_successfully? -%}
+    <label for="Email-{{ section_id }}" class="hidden-label">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
+    <input type="hidden" name="contact[tags]" value="prospect,newsletter">
+    <input type="hidden" name="contact[context]" value="{{ snippet_context }}">
+    <div class="input-group newsletter__input-group">
+      <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email-{{ section_id }}" class="input-group-field newsletter__input" autocorrect="off" autocapitalize="off">
+      <div class="input-group-btn">
+        <button type="submit" class="btn news-button-alex" style="margin-left: 1px !important; padding-top: 13px !important" name="commit">
+          <span class="form__submit--large">{{ 'general.newsletter_form.submit' | t }}</span>
+          <span class="form__submit--small">
+            <!-- <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-arrow-right" viewBox="0 0 50 15">
+              <path d="M0 9.63V5.38h35V0l15 7.5L35 15V9.63z"/>
+            </svg> -->
+            <svg 
+              version="1.1" 
+              id="Capa_1" 
+              xmlns="http://www.w3.org/2000/svg" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" 
+              x="0px" 
+              y="0px"
+	            viewBox="0 0 477.867 477.867" 
+              style="enable-background:new 0 0 477.867 477.867; width: 25; margin-top: 4x;" 
+              xml:space="preserve">
+                  <path d="M460.8,68.267H17.067C7.641,68.267,0,75.908,0,85.333v307.2c0,9.426,7.641,17.067,17.067,17.067H460.8
+                    c9.426,0,17.067-7.641,17.067-17.067v-307.2C477.867,75.908,470.226,68.267,460.8,68.267z M432.811,102.4L238.933,251.529
+                    L45.056,102.4H432.811z M443.733,375.467h-409.6V137.062L228.54,286.6c6.13,4.707,14.657,4.707,20.787,0l194.406-149.538V375.467z
+                    "/>
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  {%- endunless -%}
+{% endform %}
